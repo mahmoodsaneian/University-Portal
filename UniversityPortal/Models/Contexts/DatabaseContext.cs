@@ -9,7 +9,8 @@ public class DatabaseContext : DbContext
     {
         
     }
-    
+
+ 
     //Create Tables
     public DbSet<Lesson> Lessons { get; set; }
     
@@ -32,7 +33,8 @@ public class DatabaseContext : DbContext
     public DbSet<StudentClass> StudentClasses { get; set; }
     
     public DbSet<StudentTerm> StudentTerms { get; set; }
-
+    
+    public DbSet<Manager> Managers { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         //Relation between Education & Teacher tables

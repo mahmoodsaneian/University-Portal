@@ -2,7 +2,7 @@ namespace UniversityPortal.Models.Entities;
 
 public class ClassRoom
 {
-    public int ClassId { get; set; }
+    public int ClassRoomId { get; set; }
     
     public int TeacherId { get; set; }
     
