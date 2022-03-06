@@ -17,4 +17,10 @@ public class User
     public string EmailAddress { get; set; }
     
     public string NationalCode { get; set; }
+    
+    public Student Student { get; set; }
+    
+    public Teacher Teacher { get; set; }
+    
+    public Manager Manager { get; set; }
 }

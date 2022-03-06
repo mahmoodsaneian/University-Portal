@@ -73,5 +73,23 @@ public class DatabaseContext : DbContext
             .HasOne(p => p.Lesson)
             .WithMany(p => p.PrerequisitesLessons)
             .HasForeignKey(p => p.LessonId);
+        
+        //Relation between User & Student tables
+        modelBuilder.Entity<Student>()
+            .HasOne(p => p.User)
+            .WithOne(p => p.Student)
+            .HasForeignKey<User>(p => p.UserId);
+        
+        //Relation between User & Manager tables
+        modelBuilder.Entity<Manager>()
+            .HasOne(p => p.User)
+            .WithOne(p => p.Manager)
+            .HasForeignKey<User>(p => p.UserId);
+        
+        //Relation between User & Student tables
+        modelBuilder.Entity<Teacher>()
+            .HasOne(p => p.User)
+            .WithOne(p => p.Teacher)
+            .HasForeignKey<User>(p => p.UserId);
     }
 }

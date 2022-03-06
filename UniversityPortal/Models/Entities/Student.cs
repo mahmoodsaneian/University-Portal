@@ -15,4 +15,8 @@ public class Student
     public ICollection<StudentClass> StudentClasses { get; set; }
     
     public ICollection<StudentTerm> StudentTerms { get; set; }
+    
+    public int UserId { get; set; }
+    
+    public User User { get; set; }
 }
