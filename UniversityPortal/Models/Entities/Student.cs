@@ -11,4 +11,8 @@ public class Student
     public double TotalGrade { get; set; }
     
     public string FieldOfStudy { get; set; }
+    
+    public ICollection<StudentClass> StudentClasses { get; set; }
+    
+    public ICollection<StudentTerm> StudentTerms { get; set; }
 }

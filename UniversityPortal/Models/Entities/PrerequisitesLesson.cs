@@ -7,4 +7,6 @@ public class PrerequisitesLesson
     public int LessonId { get; set; }
     
     public int PrerequisitesLessonId { get; set; }
+    
+    public Lesson Lesson { get; set; }
 }

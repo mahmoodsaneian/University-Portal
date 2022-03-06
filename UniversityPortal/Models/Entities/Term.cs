@@ -7,4 +7,6 @@ public class Term
     public DateTime StartTime { get; set; }
     
     public DateTime EndTime { get; set; }
+    
+    public ICollection<StudentTerm> StudentTerms { get; set; }
 }

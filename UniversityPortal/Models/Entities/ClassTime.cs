@@ -12,5 +12,7 @@ public class ClassTime
     
     public int ClassNumber { get; set; }
     
-    public int ClassRoomId { get; set; }   
+    public int ClassRoomId { get; set; }
+    
+    public ClassRoom ClassRoom { get; set; }
 }

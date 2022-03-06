@@ -9,4 +9,8 @@ public class StudentClass
     public int ClassRoomId { get; set; }
     
     public float Grade { get; set; }
+    
+    public Student Student { get; set; }
+    
+    public ClassRoom ClassRoom { get; set; }
 }

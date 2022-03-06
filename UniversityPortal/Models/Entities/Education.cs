@@ -11,4 +11,6 @@ public class Education
     public string FieldOfStudy { get; set; }
     
     public int TeacherId { get; set; }
+    
+    public Teacher Teacher { get; set; }
 }

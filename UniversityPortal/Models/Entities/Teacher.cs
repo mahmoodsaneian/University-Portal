@@ -6,4 +6,5 @@ public class Teacher : User
 
     public int Rank { get; set; }
 
+    public ICollection<Education> Educations { get; set; }
 }
