@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using UniversityPortal.Models.Contexts;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,6 +11,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+var connectionString = builder.Configuration.GetConnectionString("UniversityPortal");
+builder.Services.AddEntityFrameworkSqlServer()
+    .AddDbContext<DatabaseContext>(option => option.UseSqlServer(connectionString));
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
