@@ -1,10 +1,13 @@
-namespace UniversityPortal.Models.Entities;
+using UniversityPortal.Models.Entities;
 
-public class User
+namespace UniversityPortal.Models.Dtos;
+
+public class TeacherDto
 {
-    public int UserId { get; set; }
     
-    public string UserName { get; set; }
+    public int Rank { get; set; }
+
+    public string Username { get; set; }
     
     public string Password { get; set; }
     
@@ -17,10 +20,4 @@ public class User
     public string EmailAddress { get; set; }
     
     public string NationalCode { get; set; }
-    
-    public Student? Student { get; set; }
-    
-    public Teacher? Teacher { get; set; }
-    
-    public Manager? Manager { get; set; }
 }

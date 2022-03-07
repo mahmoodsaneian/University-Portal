@@ -1,3 +1,5 @@
+using UniversityPortal.Models.Dtos;
+
 namespace UniversityPortal.Models.Entities;
 
 public class Teacher 
