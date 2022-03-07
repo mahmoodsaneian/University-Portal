@@ -40,50 +40,6 @@ namespace UniversityPortal.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Managers",
-                columns: table => new
-                {
-                    ManagerId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Managers", x => x.ManagerId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Students",
-                columns: table => new
-                {
-                    StudentId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StudentNumber = table.Column<int>(type: "int", nullable: false),
-                    EntryYear = table.Column<int>(type: "int", nullable: false),
-                    TotalGrade = table.Column<double>(type: "float", nullable: false),
-                    FieldOfStudy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Students", x => x.StudentId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Teachers",
-                columns: table => new
-                {
-                    TeacherId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Rank = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Teachers", x => x.TeacherId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Terms",
                 columns: table => new
                 {
@@ -95,6 +51,25 @@ namespace UniversityPortal.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Terms", x => x.TermId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NationalCode = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.UserId);
                 });
 
             migrationBuilder.CreateTable(
@@ -141,6 +116,68 @@ namespace UniversityPortal.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Managers",
+                columns: table => new
+                {
+                    ManagerId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Managers", x => x.ManagerId);
+                    table.ForeignKey(
+                        name: "FK_Managers_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Students",
+                columns: table => new
+                {
+                    StudentId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StudentNumber = table.Column<int>(type: "int", nullable: false),
+                    EntryYear = table.Column<int>(type: "int", nullable: false),
+                    TotalGrade = table.Column<double>(type: "float", nullable: false),
+                    FieldOfStudy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Students", x => x.StudentId);
+                    table.ForeignKey(
+                        name: "FK_Students_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Teachers",
+                columns: table => new
+                {
+                    TeacherId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Rank = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Teachers", x => x.TeacherId);
+                    table.ForeignKey(
+                        name: "FK_Teachers_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "StudentClasses",
                 columns: table => new
                 {
@@ -164,64 +201,6 @@ namespace UniversityPortal.Migrations
                         column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "StudentId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Education",
-                columns: table => new
-                {
-                    EducationId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    University = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GraduationYear = table.Column<int>(type: "int", nullable: false),
-                    FieldOfStudy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TeacherId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Education", x => x.EducationId);
-                    table.ForeignKey(
-                        name: "FK_Education_Teachers_TeacherId",
-                        column: x => x.TeacherId,
-                        principalTable: "Teachers",
-                        principalColumn: "TeacherId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NationalCode = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.UserId);
-                    table.ForeignKey(
-                        name: "FK_Users_Managers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Managers",
-                        principalColumn: "ManagerId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Users_Students_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Students",
-                        principalColumn: "StudentId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Users_Teachers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Teachers",
-                        principalColumn: "TeacherId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -252,6 +231,28 @@ namespace UniversityPortal.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Education",
+                columns: table => new
+                {
+                    EducationId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    University = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GraduationYear = table.Column<int>(type: "int", nullable: false),
+                    FieldOfStudy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TeacherId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Education", x => x.EducationId);
+                    table.ForeignKey(
+                        name: "FK_Education_Teachers_TeacherId",
+                        column: x => x.TeacherId,
+                        principalTable: "Teachers",
+                        principalColumn: "TeacherId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_ClassTimes_ClassRoomId",
                 table: "ClassTimes",
@@ -261,6 +262,12 @@ namespace UniversityPortal.Migrations
                 name: "IX_Education_TeacherId",
                 table: "Education",
                 column: "TeacherId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Managers_UserId",
+                table: "Managers",
+                column: "UserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_PrerequisitesLessons_LessonId",
@@ -278,6 +285,12 @@ namespace UniversityPortal.Migrations
                 column: "StudentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Students_UserId",
+                table: "Students",
+                column: "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_StudentTerms_StudentId",
                 table: "StudentTerms",
                 column: "StudentId");
@@ -286,6 +299,12 @@ namespace UniversityPortal.Migrations
                 name: "IX_StudentTerms_TermId",
                 table: "StudentTerms",
                 column: "TermId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Teachers_UserId",
+                table: "Teachers",
+                column: "UserId",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -297,6 +316,9 @@ namespace UniversityPortal.Migrations
                 name: "Education");
 
             migrationBuilder.DropTable(
+                name: "Managers");
+
+            migrationBuilder.DropTable(
                 name: "PrerequisitesLessons");
 
             migrationBuilder.DropTable(
@@ -306,7 +328,7 @@ namespace UniversityPortal.Migrations
                 name: "StudentTerms");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Teachers");
 
             migrationBuilder.DropTable(
                 name: "Lessons");
@@ -315,16 +337,13 @@ namespace UniversityPortal.Migrations
                 name: "ClassRooms");
 
             migrationBuilder.DropTable(
-                name: "Terms");
-
-            migrationBuilder.DropTable(
-                name: "Managers");
-
-            migrationBuilder.DropTable(
                 name: "Students");
 
             migrationBuilder.DropTable(
-                name: "Teachers");
+                name: "Terms");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

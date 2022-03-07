@@ -12,7 +12,7 @@ using UniversityPortal.Models.Contexts;
 namespace UniversityPortal.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220306110240_Init")]
+    [Migration("20220307045455_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -142,6 +142,9 @@ namespace UniversityPortal.Migrations
 
                     b.HasKey("ManagerId");
 
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
                     b.ToTable("Managers");
                 });
 
@@ -191,6 +194,9 @@ namespace UniversityPortal.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("StudentId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Students");
                 });
@@ -263,6 +269,9 @@ namespace UniversityPortal.Migrations
 
                     b.HasKey("TeacherId");
 
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
                     b.ToTable("Teachers");
                 });
 
@@ -288,7 +297,10 @@ namespace UniversityPortal.Migrations
             modelBuilder.Entity("UniversityPortal.Models.Entities.User", b =>
                 {
                     b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"), 1L, 1);
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
@@ -345,6 +357,17 @@ namespace UniversityPortal.Migrations
                     b.Navigation("Teacher");
                 });
 
+            modelBuilder.Entity("UniversityPortal.Models.Entities.Manager", b =>
+                {
+                    b.HasOne("UniversityPortal.Models.Entities.User", "User")
+                        .WithOne("Manager")
+                        .HasForeignKey("UniversityPortal.Models.Entities.Manager", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("UniversityPortal.Models.Entities.PrerequisitesLesson", b =>
                 {
                     b.HasOne("UniversityPortal.Models.Entities.Lesson", "Lesson")
@@ -354,6 +377,17 @@ namespace UniversityPortal.Migrations
                         .IsRequired();
 
                     b.Navigation("Lesson");
+                });
+
+            modelBuilder.Entity("UniversityPortal.Models.Entities.Student", b =>
+                {
+                    b.HasOne("UniversityPortal.Models.Entities.User", "User")
+                        .WithOne("Student")
+                        .HasForeignKey("UniversityPortal.Models.Entities.Student", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("UniversityPortal.Models.Entities.StudentClass", b =>
@@ -394,31 +428,15 @@ namespace UniversityPortal.Migrations
                     b.Navigation("Term");
                 });
 
-            modelBuilder.Entity("UniversityPortal.Models.Entities.User", b =>
+            modelBuilder.Entity("UniversityPortal.Models.Entities.Teacher", b =>
                 {
-                    b.HasOne("UniversityPortal.Models.Entities.Manager", "Manager")
-                        .WithOne("User")
-                        .HasForeignKey("UniversityPortal.Models.Entities.User", "UserId")
+                    b.HasOne("UniversityPortal.Models.Entities.User", "User")
+                        .WithOne("Teacher")
+                        .HasForeignKey("UniversityPortal.Models.Entities.Teacher", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("UniversityPortal.Models.Entities.Student", "Student")
-                        .WithOne("User")
-                        .HasForeignKey("UniversityPortal.Models.Entities.User", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("UniversityPortal.Models.Entities.Teacher", "Teacher")
-                        .WithOne("User")
-                        .HasForeignKey("UniversityPortal.Models.Entities.User", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Manager");
-
-                    b.Navigation("Student");
-
-                    b.Navigation("Teacher");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("UniversityPortal.Models.Entities.ClassRoom", b =>
@@ -433,33 +451,33 @@ namespace UniversityPortal.Migrations
                     b.Navigation("PrerequisitesLessons");
                 });
 
-            modelBuilder.Entity("UniversityPortal.Models.Entities.Manager", b =>
-                {
-                    b.Navigation("User")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("UniversityPortal.Models.Entities.Student", b =>
                 {
                     b.Navigation("StudentClasses");
 
                     b.Navigation("StudentTerms");
-
-                    b.Navigation("User")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("UniversityPortal.Models.Entities.Teacher", b =>
                 {
                     b.Navigation("Educations");
-
-                    b.Navigation("User")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("UniversityPortal.Models.Entities.Term", b =>
                 {
                     b.Navigation("StudentTerms");
+                });
+
+            modelBuilder.Entity("UniversityPortal.Models.Entities.User", b =>
+                {
+                    b.Navigation("Manager")
+                        .IsRequired();
+
+                    b.Navigation("Student")
+                        .IsRequired();
+
+                    b.Navigation("Teacher")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

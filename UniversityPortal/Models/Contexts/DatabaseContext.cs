@@ -41,7 +41,7 @@ public class DatabaseContext : DbContext
         modelBuilder.Entity<Education>().HasOne(p => p.Teacher)
             .WithMany(p => p.Educations)
             .HasForeignKey(p => p.TeacherId);
-
+        
         //Relation between ClassTime & ClassRoom tables
         modelBuilder.Entity<ClassTime>()
             .HasOne(p => p.ClassRoom)
@@ -53,7 +53,7 @@ public class DatabaseContext : DbContext
             .HasOne(p => p.Student)
             .WithMany(p => p.StudentClasses)
             .HasForeignKey(p => p.StudentId);
-
+        
         modelBuilder.Entity<StudentClass>()
             .HasOne(p => p.ClassRoom)
             .WithMany(p => p.StudentClasses)
@@ -64,7 +64,7 @@ public class DatabaseContext : DbContext
             .HasOne(p => p.Student)
             .WithMany(p => p.StudentTerms)
             .HasForeignKey(p => p.StudentId);
-
+        
         modelBuilder.Entity<StudentTerm>()
             .HasOne(p => p.Term)
             .WithMany(p => p.StudentTerms)
@@ -77,21 +77,21 @@ public class DatabaseContext : DbContext
             .HasForeignKey(p => p.LessonId);
         
         //Relation between User & Student tables
-        modelBuilder.Entity<Student>()
-            .HasOne(p => p.User)
-            .WithOne(p => p.Student)
-            .HasForeignKey<User>(p => p.UserId);
+        modelBuilder.Entity<User>()
+            .HasOne(p => p.Student)
+            .WithOne(p => p.User)
+            .HasForeignKey<Student>(p => p.UserId);
         
         //Relation between User & Manager tables
-        modelBuilder.Entity<Manager>()
-            .HasOne(p => p.User)
-            .WithOne(p => p.Manager)
-            .HasForeignKey<User>(p => p.UserId);
+        modelBuilder.Entity<User>()
+            .HasOne(p => p.Manager)
+            .WithOne(p => p.User)
+            .HasForeignKey<Manager>(p => p.UserId);
         
         //Relation between User & Student tables
-        modelBuilder.Entity<Teacher>()
-            .HasOne(p => p.User)
-            .WithOne(p => p.Teacher)
-            .HasForeignKey<User>(p => p.UserId);
+        modelBuilder.Entity<User>()
+            .HasOne(p => p.Teacher)
+            .WithOne(p => p.User)
+            .HasForeignKey<Teacher>(p => p.UserId);
     }
 }
