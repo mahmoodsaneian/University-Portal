@@ -41,23 +41,7 @@ public class TeacherRepository
     
     public int Add(TeacherDto teacherDto)
     {
-        // User newUser = new User()
-        // {
-        //     FirstName = teacherDto.FirstName,
-        //     LastName = teacherDto.LastName,
-        //     EmailAddress = teacherDto.EmailAddress,
-        //     NationalCode = teacherDto.NationalCode,
-        //     UserName = teacherDto.Username,
-        //     Password = teacherDto.Password,
-        //     PhoneNumber = teacherDto.PhoneNumber
-        // };
-        //
-        // Teacher newTeacher = new Teacher()
-        // {
-        //     Rank = 1,
-        //     Educations = new List<Education>()
-        // };
-
+        
         Teacher newTeacher = new Teacher()
         {
             Rank = 1,
