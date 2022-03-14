@@ -12,8 +12,8 @@ using UniversityPortal.Models.Contexts;
 namespace UniversityPortal.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220307045455_Init")]
-    partial class Init
+    [Migration("20220308072933_add_noAction_on_teacher_delete")]
+    partial class add_noAction_on_teacher_delete
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -38,10 +38,21 @@ namespace UniversityPortal.Migrations
                     b.Property<int>("TeacherId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("TeacherId1")
+                        .HasColumnType("int");
+
                     b.Property<int>("TermId")
                         .HasColumnType("int");
 
                     b.HasKey("ClassRoomId");
+
+                    b.HasIndex("LessonId");
+
+                    b.HasIndex("TeacherId");
+
+                    b.HasIndex("TeacherId1");
+
+                    b.HasIndex("TermId");
 
                     b.ToTable("ClassRooms");
                 });
@@ -118,8 +129,9 @@ namespace UniversityPortal.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Unit")
                         .HasColumnType("int");
@@ -136,6 +148,10 @@ namespace UniversityPortal.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ManagerId"), 1L, 1);
+
+                    b.Property<string>("Post")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -335,6 +351,37 @@ namespace UniversityPortal.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("UniversityPortal.Models.Entities.ClassRoom", b =>
+                {
+                    b.HasOne("UniversityPortal.Models.Entities.Lesson", "Lesson")
+                        .WithMany("ClassRooms")
+                        .HasForeignKey("LessonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UniversityPortal.Models.Entities.Teacher", "Teacher")
+                        .WithMany()
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("UniversityPortal.Models.Entities.Teacher", null)
+                        .WithMany("ClassRooms")
+                        .HasForeignKey("TeacherId1");
+
+                    b.HasOne("UniversityPortal.Models.Entities.Term", "Term")
+                        .WithMany("ClassRooms")
+                        .HasForeignKey("TermId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Lesson");
+
+                    b.Navigation("Teacher");
+
+                    b.Navigation("Term");
+                });
+
             modelBuilder.Entity("UniversityPortal.Models.Entities.ClassTime", b =>
                 {
                     b.HasOne("UniversityPortal.Models.Entities.ClassRoom", "ClassRoom")
@@ -448,6 +495,8 @@ namespace UniversityPortal.Migrations
 
             modelBuilder.Entity("UniversityPortal.Models.Entities.Lesson", b =>
                 {
+                    b.Navigation("ClassRooms");
+
                     b.Navigation("PrerequisitesLessons");
                 });
 
@@ -460,24 +509,25 @@ namespace UniversityPortal.Migrations
 
             modelBuilder.Entity("UniversityPortal.Models.Entities.Teacher", b =>
                 {
+                    b.Navigation("ClassRooms");
+
                     b.Navigation("Educations");
                 });
 
             modelBuilder.Entity("UniversityPortal.Models.Entities.Term", b =>
                 {
+                    b.Navigation("ClassRooms");
+
                     b.Navigation("StudentTerms");
                 });
 
             modelBuilder.Entity("UniversityPortal.Models.Entities.User", b =>
                 {
-                    b.Navigation("Manager")
-                        .IsRequired();
+                    b.Navigation("Manager");
 
-                    b.Navigation("Student")
-                        .IsRequired();
+                    b.Navigation("Student");
 
-                    b.Navigation("Teacher")
-                        .IsRequired();
+                    b.Navigation("Teacher");
                 });
 #pragma warning restore 612, 618
         }

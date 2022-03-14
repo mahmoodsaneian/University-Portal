@@ -9,4 +9,6 @@ public class Term
     public DateTime EndTime { get; set; }
     
     public ICollection<StudentTerm> StudentTerms { get; set; }
+    
+    public ICollection<ClassRoom> ClassRooms { get; set; }
 }

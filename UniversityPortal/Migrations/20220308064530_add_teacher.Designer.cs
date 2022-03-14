@@ -12,8 +12,8 @@ using UniversityPortal.Models.Contexts;
 namespace UniversityPortal.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220307104415_AddPostColumn")]
-    partial class AddPostColumn
+    [Migration("20220308064530_add_teacher")]
+    partial class add_teacher
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -42,6 +42,12 @@ namespace UniversityPortal.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ClassRoomId");
+
+                    b.HasIndex("LessonId");
+
+                    b.HasIndex("TeacherId");
+
+                    b.HasIndex("TermId");
 
                     b.ToTable("ClassRooms");
                 });
@@ -118,8 +124,9 @@ namespace UniversityPortal.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Unit")
                         .HasColumnType("int");
@@ -339,6 +346,33 @@ namespace UniversityPortal.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("UniversityPortal.Models.Entities.ClassRoom", b =>
+                {
+                    b.HasOne("UniversityPortal.Models.Entities.Lesson", "Lesson")
+                        .WithMany("ClassRooms")
+                        .HasForeignKey("LessonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UniversityPortal.Models.Entities.Teacher", "Teacher")
+                        .WithMany("ClassRooms")
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UniversityPortal.Models.Entities.Term", "Term")
+                        .WithMany("ClassRooms")
+                        .HasForeignKey("TermId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Lesson");
+
+                    b.Navigation("Teacher");
+
+                    b.Navigation("Term");
+                });
+
             modelBuilder.Entity("UniversityPortal.Models.Entities.ClassTime", b =>
                 {
                     b.HasOne("UniversityPortal.Models.Entities.ClassRoom", "ClassRoom")
@@ -452,6 +486,8 @@ namespace UniversityPortal.Migrations
 
             modelBuilder.Entity("UniversityPortal.Models.Entities.Lesson", b =>
                 {
+                    b.Navigation("ClassRooms");
+
                     b.Navigation("PrerequisitesLessons");
                 });
 
@@ -464,11 +500,15 @@ namespace UniversityPortal.Migrations
 
             modelBuilder.Entity("UniversityPortal.Models.Entities.Teacher", b =>
                 {
+                    b.Navigation("ClassRooms");
+
                     b.Navigation("Educations");
                 });
 
             modelBuilder.Entity("UniversityPortal.Models.Entities.Term", b =>
                 {
+                    b.Navigation("ClassRooms");
+
                     b.Navigation("StudentTerms");
                 });
 

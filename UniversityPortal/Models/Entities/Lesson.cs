@@ -11,4 +11,6 @@ public class Lesson
     public string Type { get; set; }
     
     public ICollection<PrerequisitesLesson> PrerequisitesLessons { get; set; }
+    
+    public ICollection<ClassRoom> ClassRooms { get; set; }
 }

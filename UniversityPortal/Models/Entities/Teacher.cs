@@ -13,4 +13,6 @@ public class Teacher
     public int UserId { get; set; }
     
     public User User { get; set; }
+    
+    public ICollection<ClassRoom> ClassRooms { get; set; }
 }

@@ -12,8 +12,8 @@ using UniversityPortal.Models.Contexts;
 namespace UniversityPortal.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220307122216_Change-type-of-[Type]-column-in-Lesson-table")]
-    partial class ChangetypeofTypecolumninLessontable
+    [Migration("20220308064438_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,13 +35,14 @@ namespace UniversityPortal.Migrations
                     b.Property<int>("LessonId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TeacherId")
-                        .HasColumnType("int");
-
                     b.Property<int>("TermId")
                         .HasColumnType("int");
 
                     b.HasKey("ClassRoomId");
+
+                    b.HasIndex("LessonId");
+
+                    b.HasIndex("TermId");
 
                     b.ToTable("ClassRooms");
                 });
@@ -340,6 +341,25 @@ namespace UniversityPortal.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("UniversityPortal.Models.Entities.ClassRoom", b =>
+                {
+                    b.HasOne("UniversityPortal.Models.Entities.Lesson", "Lesson")
+                        .WithMany("ClassRooms")
+                        .HasForeignKey("LessonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UniversityPortal.Models.Entities.Term", "Term")
+                        .WithMany("ClassRooms")
+                        .HasForeignKey("TermId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Lesson");
+
+                    b.Navigation("Term");
+                });
+
             modelBuilder.Entity("UniversityPortal.Models.Entities.ClassTime", b =>
                 {
                     b.HasOne("UniversityPortal.Models.Entities.ClassRoom", "ClassRoom")
@@ -453,6 +473,8 @@ namespace UniversityPortal.Migrations
 
             modelBuilder.Entity("UniversityPortal.Models.Entities.Lesson", b =>
                 {
+                    b.Navigation("ClassRooms");
+
                     b.Navigation("PrerequisitesLessons");
                 });
 
@@ -470,6 +492,8 @@ namespace UniversityPortal.Migrations
 
             modelBuilder.Entity("UniversityPortal.Models.Entities.Term", b =>
                 {
+                    b.Navigation("ClassRooms");
+
                     b.Navigation("StudentTerms");
                 });
 

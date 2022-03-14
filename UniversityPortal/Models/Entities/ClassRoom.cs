@@ -13,4 +13,10 @@ public class ClassRoom
     public ICollection<ClassTime> ClassTimes { get; set; }
     
     public ICollection<StudentClass> StudentClasses { get; set; }
+    
+    public Teacher Teacher { get; set; }
+    
+    public Lesson Lesson { get; set; }
+    
+    public Term Term { get; set; }
 }
